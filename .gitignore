@@ -1,0 +1,6 @@
+other/ravenDB/*
+.DS_Store
+data/dataset/*
+data/*.csv
+benchmark/results/results_images/*
+benchmark/results/benchmark_results.json
