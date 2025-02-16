@@ -1,6 +1,6 @@
 # Benchmark Instructions
 
-Welcome to the Timeseries + Graph benchmarks for PostgreSQL, ArangoDB, and RavenDB. Follow the steps below to set up your environment, prepare the data, execute benchmarks, and visualize the results. The benchmark includes 5 Timeseries Queries and 3 Graph Queries.
+Welcome to the Timeseries + Graph benchmarks for PostgreSQL, ArangoDB, and RavenDB. Follow the steps below to set up your environment, prepare the data, execute benchmarks, and visualize the results. The benchmark includes 5 Timeseries Queries and 3 Graph Queries. Note that all commands should be executed from the base directory unless stated otherwise.
 
 ## Prerequisites
 
@@ -14,7 +14,8 @@ Ensure you have the following installed:
 
 ### 1. Download the Dataset
 
-Download the dataset from [Zenodo](https://zenodo.org/records/13846868) and save the files `graph_edges.json` and `graph_nodes.json` inside the `data/dataset` folder.
+Download the dataset from [Zenodo](https://zenodo.org/records/13846868) and save the files `graph_edges.json` and `graph_nodes.json` inside the `data/dataset` folder (this folder might need to be created first).
+
 
 ### 2. Run Preparation Scripts
 
@@ -130,13 +131,9 @@ db._createEdgeCollection("edge_collection");
 
 ### RavenDB
 
-1. Download and install [RavenDB](https://ravendb.net/download) (or download the docker image) **Version 5.4**
-2. Enable experimental features by adding the following to `settings.json`:
-   ```json
-   "Features.Availability": "Experimental"
-   ```
-3. Start the database or Docker container and follow the setup wizard selecting all default options but enabling experimental features.
-4. In the Database [Web Interface](http://127.0.0.1:8080) create a new database named `benchmark_db` (leave all other settings as default).
+1. Download and install [RavenDB](https://ravendb.net/download) (or download the [docker image](https://hub.docker.com/r/ravendb/ravendb/)) **Version 5.4**
+2. Start the database or Docker container and follow the setup wizard selecting all default options but **enabling experimental features**.
+3. In the Database [Web Interface](http://127.0.0.1:8080) create a new database named `benchmark_db` (leave all other settings as default).
 
 ---
 
@@ -178,18 +175,18 @@ go run . -query -datatype graph -db {database}
 
 ## Visualizing Benchmark Results
 
-After running the benchmarks, the results are stored as a JSON file in **`benchmark/results`**. To generate visualizations, use the provided Python script:
+After running an insertion or query, the results are stored in a JSON file in **`benchmark/results`**. After running all insertions and queries for all databases you can visualize the results in bar-charts by running the following script:
 
 ```bash
 python3 benchmark/results/visualize_benchmark_results.py
 ```
 
-This script will generate bar charts as PNG files using the benchmark results. They will be stored in the folder **`benchmark/results/results_images`**
+This script will generate bar charts as PNG files comparing the benchmark results. They will be stored in the folder **`benchmark/results/results_images`**
 
 ---
 
 ## Additional Remarks
 
-- All commands should be executed from the base directory unless stated otherwise.
 - The database setup and benchmark scripts were tested on macOS. Minor adjustments may be required for other operating systems.
+- The storage size of the time- eries data needs to be determined manually in the arangoDB and RavenDB web interfaces, for PostgreSQL the result is printed after the insertion
 
