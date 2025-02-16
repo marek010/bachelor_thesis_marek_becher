@@ -10,6 +10,7 @@ import (
 	ravendb "github.com/ravendb/ravendb-go-client"
 )
 
+// In ravenDB an index is defined by a map and reduce function in javascript
 func NewStationsDegreeIndex() *ravendb.IndexCreationTask {
     index := ravendb.NewIndexCreationTask("StationsDegreeIndex")
     index.Map = `
@@ -47,7 +48,7 @@ func NewStationsDegreeIndex() *ravendb.IndexCreationTask {
 }
 
 func insertGraphData(session *ravendb.DocumentSession, store *ravendb.DocumentStore) {
-    // Open csv
+    // Open CSV
     csvPath := "../data/raven_graph_data.csv"
     file, err := os.Open(csvPath)
     shared.HandleError(err, "Error opening CSV file")
@@ -60,6 +61,7 @@ func insertGraphData(session *ravendb.DocumentSession, store *ravendb.DocumentSt
     records, err := reader.ReadAll()
     shared.HandleError(err, "Error opening CSV records")
 
+		// Interate of all the records in the source file
     for _, record := range records {
         doc := &map[string]interface{}{}
         *doc = make(map[string]interface{})
@@ -94,7 +96,7 @@ func insertGraphData(session *ravendb.DocumentSession, store *ravendb.DocumentSt
     log.Printf("Data import successful!")
 
 		// Create index
-    log.Print("Creating Indexes...")
+    log.Print("Creating Index...")
     index := NewStationsDegreeIndex()
     err = index.Execute(store, nil, dbname)
     shared.HandleError(err, "Error creating index")
