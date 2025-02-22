@@ -18,17 +18,17 @@ def setup_chart(width, height, log_scale=False):
 
 def format_chart(ax, title, ylabel):
     ax.set_title(title, fontsize=14, fontweight='bold')
-    ax.set_ylabel(ylabel, fontsize=12)
+    ax.set_ylabel(ylabel, fontsize=14)
     ax.grid(axis='y', linestyle='solid', alpha=0.5)
     ax.tick_params(axis='x', labelsize=14)
 
 # Value numbers on top of bars
 def add_value_labels(ax, bars):
     for bar in bars:
-        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height(), f'{bar.get_height():.1f}', ha='center', va='bottom', fontsize=10)
+        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height(), f'{bar.get_height():.1f}', ha='center', va='bottom', fontsize=12)
 
 def create_x_axis_labels(queries, base):
-    return [f'{base + (i+1)/10:.1f} {q.replace("_", " ").title()}' for i, q in enumerate(queries)]
+    return [f'{base + (i+1)/12:.1f} {q.replace("_", " ").title()}' for i, q in enumerate(queries)]
 
 def create_result_visualizations(filename):
     df = pd.DataFrame(json.load(open(filename))['results'])
@@ -47,7 +47,7 @@ def create_result_visualizations(filename):
     
     ax.set_xticks(x + width)
     ax.set_xticklabels(create_x_axis_labels(timeseries_queries, 1.0), ha='center')
-    ax.legend(loc='upper left')
+    ax.legend(loc='upper left', fontsize=14)
     format_chart(ax, 'Time-Series Queries', 'Average Query Latency in ms (Log Scale)')
     plt.tight_layout()
     plt.savefig(f'{results_folder_path}/results_images/timeseries_queries_comparison.png', dpi=300)
@@ -66,7 +66,7 @@ def create_result_visualizations(filename):
     
     ax.set_xticks(x + width)
     ax.set_xticklabels(create_x_axis_labels(graph_queries, 2.0), ha='center')
-    ax.legend(loc='upper left')
+    ax.legend(loc='upper left', fontsize=14)
     format_chart(ax, 'Graph Queries', 'Average Query Latency in ms (Log Scale)')
     plt.tight_layout()
     plt.savefig(f'{results_folder_path}/results_images/graph_queries_comparison.png', dpi=300)
@@ -74,12 +74,15 @@ def create_result_visualizations(filename):
     
     # Data Insertion Chart
     insert_df = df[df['queryName'] == 'timeseries_insertion']
-    fig, ax = setup_chart(8, 6)
-    bars = ax.bar(insert_df['database'], insert_df['averageTime'], color=colors)
+    fig, ax = setup_chart(8, 5.5)
+    heights = [insert_df[insert_df['database'] == db]['averageTime'].iloc[0] for db in databases]
+    bars = ax.bar(databases, heights, color=colors)
+
     add_value_labels(ax, bars)
     format_chart(ax, 'Data Insertion Performance', 'Insertion Time (ms)')
     ax.set_xlabel('Database', fontsize=12)
     plt.tight_layout()
+
     plt.savefig(f'{results_folder_path}/results_images/insertion_comparison.png', dpi=300)
     plt.close()
 
