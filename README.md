@@ -175,7 +175,7 @@ go run . -query -datatype graph -db {database}
 
 ## Visualizing Benchmark Results
 
-After running an insertion or query, the results are stored in a JSON file in **`benchmark/results`**. After running all insertions and queries for all databases you can visualize the results in bar-charts by running the following script:
+After running an insertion or query, the results are stored in a JSON file in **`benchmark/results`**. Create a folder named **`results_images`** inside the folder **`results`** After running all insertions and queries for all databases you can visualize the results in bar-charts by running the following script:
 
 ```bash
 python3 benchmark/results/visualize_benchmark_results.py
