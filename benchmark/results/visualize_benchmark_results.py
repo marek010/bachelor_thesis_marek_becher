@@ -28,7 +28,7 @@ def add_value_labels(ax, bars):
         ax.text(bar.get_x() + bar.get_width()/2, bar.get_height(), f'{bar.get_height():.1f}', ha='center', va='bottom', fontsize=12)
 
 def create_x_axis_labels(queries, base):
-    return [f'{base + (i+1)/12:.1f} {q.replace("_", " ").title()}' for i, q in enumerate(queries)]
+    return [f'{base + (i+1)/10:.1f} {q.replace("_", " ").title()}' for i, q in enumerate(queries)]
 
 def create_result_visualizations(filename):
     df = pd.DataFrame(json.load(open(filename))['results'])
